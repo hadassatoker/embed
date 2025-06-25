@@ -1,6 +1,6 @@
 (function () {
     // --- Config & State ---
-    const API_BASE = 'http://localhost:9016/vibe_coding';
+    const API_BASE = 'http://localhost:9016/'; // perseus render route
     const DEFAULT_WIDTH = '500px';
     const DEFAULT_HEIGHT = '650px';
 
