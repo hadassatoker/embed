@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Embed Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background: #f9f9f9;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 32px 24px;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+      }
+      button {
+        padding: 12px 28px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 6px;
+        background: #1dbf73;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background: #159c5b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Embed Demo</h1>
+      <button id="open-iframe-btn">open iframe</button>
+    </div>
+    <script>
+      document.getElementById('open-iframe-btn').addEventListener('click', function () {
+        // call webhook to create a conversation for this project
+        // when conversation created successfully:
+        const event = new Event('open-iframe');
+        window.dispatchEvent(event);
+      });
+    </script>
+    <script src="embed.js" data-width="500px" data-height="650px"></script>
+  </body>
+</html>
