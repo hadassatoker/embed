@@ -1,6 +1,6 @@
 (function () {
     // --- Config & State ---
-    const API_BASE = 'http://localhost:9016/'; // perseus render route
+    const API_BASE = 'http://localhost:9016/vibe_coding';
     const DEFAULT_WIDTH = '500px';
     const DEFAULT_HEIGHT = '650px';
 
@@ -17,60 +17,42 @@
     function init() {
         fetch(`${API_BASE}/api/project/${projectId}`).then((response) => {
             if (response.ok) {
-                createIframe(true);
+                createIframe();
             }
         });
     }
 
     // --- Iframe Management ---
-    function createIframe(minimized) {
-        iframe = document.createElement('iframe');
-        iframe.setAttribute('id', `fiverr-embed-${projectId}`);
-        iframe.style.position = 'fixed';
-        iframe.style.bottom = '20px';
-        iframe.style.right = '20px';
-        iframe.style.border = 'none';
-        isMinimized = minimized;
-        setIframeUrl();
-
-        if (isMinimized) {
-            minimizeIframe();
+    function createIframe() {
+        if (!iframe) {
+            iframe = document.createElement('iframe');
+            document.body.appendChild(iframe);
+            iframe.src = `${API_BASE}?isMinimized=${isMinimized}&projectId=${projectId}`;
+            iframe.setAttribute('id', `fiverr-embed-${projectId}`);
+            iframe.style.position = 'fixed';
+            iframe.style.bottom = '20px';
+            iframe.style.right = '20px';
+            iframe.style.border = 'none';
         } else {
-            openIframe();
+            iframe.contentWindow.postMessage({ type: 'fiverr-embed-size', isMinimized }, '*');
         }
 
-        document.body.appendChild(iframe);
-    }
-
-    function setIframeUrl() {
-        iframe.src = `${API_BASE}?isMinimized=${isMinimized}&projectId=${projectId}`;
-    }
-
-    function minimizeIframe() {
-        iframe.style.width = '40px';
-        iframe.style.height = '40px';
-        iframe.style.borderRadius = '50%';
-    }
-
-    function openIframe() {
-        iframe.style.width = width;
-        iframe.style.height = height;
-        iframe.style.borderRadius = '0';
-    }
-
-    function removeIframe() {
-        if (iframe) {
-            iframe.remove();
-            iframe = null;
+        if (isMinimized) {
+            iframe.style.width = '40px';
+            iframe.style.height = '40px';
+            iframe.style.borderRadius = '50%';
+        } else {
+            iframe.style.width = width;
+            iframe.style.height = height;
+            iframe.style.borderRadius = '0';
         }
     }
 
     // --- Event Handlers ---
     function handleMessage(event) {
         if (event.data.event === 'toggle-fiverr-embed') {
-            removeIframe();
             isMinimized = !isMinimized;
-            createIframe(isMinimized);
+            createIframe();
         }
     }
 
@@ -84,7 +66,7 @@
             }).then((response) => {
                 if (response.ok) {
                     isMinimized = false;
-                    createIframe(false);
+                    createIframe();
                 }
             });
         }
